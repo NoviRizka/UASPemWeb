@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Data Siswa</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        body.bg-gray-100 {
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen bg-gray-100">
+
+    <aside class="w-64 bg-blue-800 text-white p-6 shadow-lg flex flex-col justify-between hidden md:flex">
+        <div>
+            <h2 class="text-3xl font-bold text-center mb-10 mt-4">Sistem Siswa</h2>
+            <nav class="space-y-4">
+                <a href="#" class="flex items-center space-x-3 py-3 px-4 rounded-lg text-lg hover:bg-gray-700 transition duration-200 ease-in-out">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m0 0l7 7m-2 2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    <span>Dashboard</span>
+                </a>
+            </nav>
+        </div>
+        <a href="/logout" class="flex items-center justify-center space-x-3 py-3 px-4 bg-red-600 hover:bg-red-700 rounded-lg text-lg font-semibold transition duration-200 ease-in-out mb-4">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+            <span>Logout</span>
+        </a>
+    </aside>
+
+    <div class="flex-1 p-8 overflow-y-auto">
+        <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-5xl mx-auto">
+            <h1 class="text-4xl font-extrabold text-gray-800 mb-8 text-center">Data Siswa Kelas</h1>
+
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+                <a href="/add" class="w-full md:w-auto inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 shadow-md">
+                    Tambah Siswa Baru
+                </a>
+                <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 w-full md:w-auto">
+                    <a href="/report/pdf" class="w-full md:w-auto inline-block bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 shadow-md" target="_blank">
+                        Cetak PDF
+                    </a>
+                    <a href="/report/excel" class="w-full md:w-auto inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 shadow-md">
+                        Cetak Excel
+                    </a>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto border border-gray-200 rounded-lg shadow-md">
+                <table class="min-w-full bg-white">
+                    <thead class="bg-gray-100 border-b border-gray-200">
+                        <tr>
+                            <th class="py-4 px-6 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">ID</th>
+                            <th class="py-4 px-6 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Nama</th>
+                            <th class="py-4 px-6 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Kelas</th>
+                            <th class="py-4 px-6 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Umur</th>
+                            <th class="py-4 px-6 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{range .}}
+                        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150 ease-in-out">
+                            <td class="py-4 px-6 text-gray-800">{{.ID}}</td>
+                            <td class="py-4 px-6 text-gray-800">{{.Name}}</td>
+                            <td class="py-4 px-6 text-gray-800">{{.Class}}</td>
+                            <td class="py-4 px-6 text-gray-800">{{.Age}}</td>
+                            <td class="py-4 px-6 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                                <a href="/edit?id={{.ID}}" class="bg-yellow-400 hover:bg-yellow-500 text-white py-2 px-4 rounded-lg text-sm transition duration-300 ease-in-out text-center">Edit</a>
+                                <a href="/delete?id={{.ID}}" onclick="return confirm('Apakah Anda yakin ingin menghapus siswa ini?');" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-sm transition duration-300 ease-in-out text-center">Hapus</a>
+                            </td>
+                        </tr>
+                        {{else}}
+                        <tr>
+                            <td colspan="5" class="py-6 px-4 text-center text-gray-600 text-lg">Tidak ada data siswa.</td>
+                        </tr>
+                        {{end}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
